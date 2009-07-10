@@ -24,6 +24,7 @@ setup(name='pas.plugins.shibboleth',
       zip_safe=False,
       install_requires=[
           'setuptools',
+          'Products.PluggableAuthService'
           # -*- Extra requirements: -*-
       ],
       entry_points="""
