@@ -67,12 +67,16 @@ class ShibGroupManager(BasePlugin, Cacheable):
         if cached_info is not None:
             return cached_info
         groups = []
-        authUser = getSecurityManager().getUser().name
+        authUser = str(getSecurityManager().getUser())
         if authUser == principal.getId():
-            groups = self.REQUEST.get('HTTP_KULPRIMONUMBER')
+            #groups = self.REQUEST.get('HTTP_KULPRIMONUMBER')
+            groups = self.REQUEST.get('HTTP_KULOUNUMBER')
             if groups:
                 groups = groups.split(';')
+        else:
+            return ()
         groups = tuple(groups)
+        print '%s is in group %s' % (principal.getId(), groups)
         self.ZCacheable_set(groups, view_name)
         return groups
 
