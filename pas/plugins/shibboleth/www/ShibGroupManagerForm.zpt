@@ -8,7 +8,7 @@
 
 <h2>Add Shibboleth Group Manager</h2>
 
-<form action="manage_addSAGroupManager" method="POST">
+<form action="manage_addShibGroupManager" method="POST">
  <div>
    Id: <input type="text" value="" name="id" />
  </div>
