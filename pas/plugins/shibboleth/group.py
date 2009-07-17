@@ -67,8 +67,8 @@ class ShibGroupManager(BasePlugin, Cacheable):
         if cached_info is not None:
             return cached_info
         groups = []
-        authUser = str(getSecurityManager().getUser())
-        if authUser == principal.getId():
+        authUser = self.REQUEST.get('HTTP_EPPN')
+        if authUser and authUser == principal.getId():
             #groups = self.REQUEST.get('HTTP_KULPRIMONUMBER')
             groups = self.REQUEST.get('HTTP_KULOUNUMBER')
             if groups:
