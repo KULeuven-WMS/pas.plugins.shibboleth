@@ -72,15 +72,22 @@ Try to get the group from the current user *without* shibboleth headers:
 
 Now let's say that shibboleth has set the correct information in the REQUEST. We need to change the request:
 
-    >>> app.REQUEST.environ['HTTP_KULPRIMONUMBER'] = '50649782'
+    >>> app.REQUEST.environ['HTTP_KULOUNUMBER'] = '50649782'
+    >>> user = uf.getUser(user_name)
+    >>> shibGroupManager.getGroupsForPrincipal(user)
+    ()
 
+It still doesn't work because Shibboleth needs to provide the current logged in user information
+inside the REQUEST:
+
+    >>> app.REQUEST.environ['HTTP_EPPN'] = user_name
     >>> user = uf.getUser(user_name)
     >>> shibGroupManager.getGroupsForPrincipal(user)
     ('50649782',)
 
 And with a user with more than 1 group:
 
-    >>> app.REQUEST.environ['HTTP_KULPRIMONUMBER'] = '50649782;50649785'
+    >>> app.REQUEST.environ['HTTP_KULOUNUMBER'] = '50649782;50649785'
     >>> shibGroupManager.getGroupsForPrincipal(user)
     ('50649782', '50649785')
 

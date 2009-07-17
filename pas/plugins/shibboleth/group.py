@@ -9,7 +9,6 @@ $Id: event.py 67630 2006-04-27 00:54:03Z jfroche $
 """
 from OFS.Cache import Cacheable
 from AccessControl import ClassSecurityInfo
-from AccessControl import getSecurityManager
 from App.class_init import default__class_init__ as InitializeClass
 
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
@@ -76,7 +75,6 @@ class ShibGroupManager(BasePlugin, Cacheable):
         else:
             return ()
         groups = tuple(groups)
-        print '%s is in group %s' % (principal.getId(), groups)
         self.ZCacheable_set(groups, view_name)
         return groups
 
