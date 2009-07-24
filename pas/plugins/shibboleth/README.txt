@@ -45,6 +45,9 @@ Create our user:
     >>> uf = folder.acl_users
     >>> uf._doAddUser(user_name, user_password, [user_role], [])
 
+Group Manager
+-------------
+
 Create the shib group manager:
 
     >>> from pas.plugins.shibboleth.group import manage_addShibGroupManager
@@ -85,9 +88,62 @@ inside the REQUEST:
     >>> shibGroupManager.getGroupsForPrincipal(user)
     ('50649782',)
 
+Same if we query all the plugins implementing IGroupsPlugin:
+
+    >>> pas._getGroupsForPrincipal(user)
+    ['50649782']
+
 And with a user with more than 1 group:
 
     >>> app.REQUEST.environ['HTTP_KULOUNUMBER'] = '50649782;50649785'
     >>> shibGroupManager.getGroupsForPrincipal(user)
     ('50649782', '50649785')
 
+
+User Properties
+---------------
+
+Create the shib user propeties manager:
+
+    >>> from pas.plugins.shibboleth.property import manage_addShibUserProperties
+    >>> manage_addShibUserProperties(uf, 'shib_user_props')
+    >>> shibUserProps = uf.shib_user_props
+
+Activate our plugin:
+
+    >>> from Products.PluggableAuthService.interfaces.plugins import IPropertiesPlugin
+    >>> plugins.activatePlugin(IPropertiesPlugin, 'shib_user_props')
+    >>> plugins.listPlugins(IPropertiesPlugin)
+    [('shib_user_props', <ShibUserPropertiesManager at /folder2/acl_users/shib_user_props>)]
+
+
+By default the plugin will return an empty UserPropertySheet as Shibboleth didn't set anything in the
+REQUEST headers
+
+    >>> userPropertySheet = shibUserProps.getPropertiesForUser(user)
+    >>> userPropertySheet
+    <Products.PluggableAuthService.UserPropertySheet.UserPropertySheet instance ...>
+
+    >>> userPropertySheet.propertyItems()
+    []
+
+Now let's say that shibboleth has set the correct information in the REQUEST. We need to change the request:
+
+    >>> app.REQUEST.environ['HTTP_KULMAIL'] = 'info@kuleuven.be'
+    >>> app.REQUEST.environ['HTTP_KULFULLNAME'] = 'John Foo'
+    >>> userPropertySheet = shibUserProps.getPropertiesForUser(user)
+    >>> userPropertySheet.propertyItems()
+    [('mail', 'info@kuleuven.be'), ('fullname', 'John Foo')]
+
+
+Same if we query all the plugins implementing IPropertiesPlugin:
+
+    >>> propfinders = plugins.listPlugins( IPropertiesPlugin )
+    >>> from Products.PluggableAuthService.interfaces.propertysheets import IPropertySheet
+    >>> for propfinder_id, propfinder in propfinders:
+    ...     data = propfinder.getPropertiesForUser(user)
+    ...     if IPropertySheet.providedBy(data):
+    ...         print data.propertyItems()
+    ...     else:
+    ...         print data
+    [('mail', 'info@kuleuven.be'), ('fullname', 'John Foo')]

@@ -14,6 +14,7 @@ from Products.PluggableAuthService.tests import pastc
 from zope.configuration.xmlconfig import XMLConfig
 from zope.app.testing import placelesssetup
 from Testing.ZopeTestCase import FunctionalDocFileSuite
+from pas.plugins.shibboleth import group
 
 def test_suite():
     return unittest.TestSuite([
@@ -22,3 +23,6 @@ def test_suite():
            package="pas.plugins.shibboleth"
            ),
         ])
+
+if __name__ == '__main__':
+    unittest.main(defaultTest='test_suite')

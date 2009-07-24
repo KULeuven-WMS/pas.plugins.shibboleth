@@ -22,8 +22,7 @@ manage_addShibGroupManagerForm = PageTemplateFile('www/ShibGroupManagerForm',
                                                globals())
 
 
-def manage_addShibGroupManager(self, id, title='',
-                            REQUEST=None):
+def manage_addShibGroupManager(self, id, title='', REQUEST=None):
     """Add a GroupManager to a Pluggable Auth Service.
     """
     rm = ShibGroupManager(id, title)
@@ -66,10 +65,10 @@ class ShibGroupManager(BasePlugin, Cacheable):
         if cached_info is not None:
             return cached_info
         groups = []
-        authUser = self.REQUEST.get('HTTP_EPPN')
+        authUser = self.REQUEST.environ.get('HTTP_EPPN')
         if authUser and authUser == principal.getId():
             #groups = self.REQUEST.get('HTTP_KULPRIMONUMBER')
-            groups = self.REQUEST.get('HTTP_KULOUNUMBER')
+            groups = self.REQUEST.environ.get('HTTP_KULOUNUMBER')
             if groups:
                 groups = groups.split(';')
         else:
