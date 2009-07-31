@@ -16,7 +16,7 @@ from Products.PluggableAuthService.plugins.BasePlugin import BasePlugin
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.PluggableAuthService.UserPropertySheet import UserPropertySheet
 
-manage_addShibUserPropertiesManagerForm = PageTemplateFile('www/ShibGroupManagerForm',
+manage_addShibUserPropertiesManagerForm = PageTemplateFile('www/ShibPropertiesManagerForm',
                                                globals())
 
 
@@ -41,7 +41,7 @@ class ShibUserPropertiesManager(BasePlugin):
     An user properties manager plugin for shibboleth
     """
     security = ClassSecurityInfo()
-    meta_type = 'ShibGroupManager'
+    meta_type = 'ShibPropertiesManager'
     manage_options = tuple(BasePlugin.manage_options)
     user_properties_mapping = {'HTTP_KULMAIL': 'mail',
                                'HTTP_KULFULLNAME': 'fullname'}
@@ -60,6 +60,7 @@ class ShibUserPropertiesManager(BasePlugin):
     #
     # IPropertiesPlugin implementation
     #
+
     def getPropertiesForUser(self, user, request=None):
         """ user -> {}
 
