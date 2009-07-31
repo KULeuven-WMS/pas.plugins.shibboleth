@@ -1,7 +1,20 @@
 <configure xmlns="http://namespaces.zope.org/zope"
            xmlns:five="http://namespaces.zope.org/five"
+           xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+           xmlns:zcml="http://namespaces.zope.org/zcml"
            i18n_domain="pas.plugins.shibboleth">
 
   <five:registerPackage package="." initialize=".initialize" />
+  <configure zcml:condition="installed Products.GenericSetup">
+
+    <adapter factory=".exportimport.ShibPropertiesXMLAdapter"/>
+
+    <genericsetup:importStep
+       name="shibboleth-properties-settings-import"
+       title="Shibboleth properties Settings Import"
+       description="Import properties for shibboleth properties setting"
+       handler=".exportimport.importShibbolethPropertiesSettings"
+       />
+  </configure>
 
 </configure>

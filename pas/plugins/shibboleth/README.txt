@@ -6,6 +6,8 @@ Load all of Five's configuration (this is a functional test):
     >>> import Products.Five
     >>> from Products.Five.zcml import load_config
     >>> load_config('configure.zcml', package=Products.Five)
+    >>> import Products.GenericSetup
+    >>> load_config('meta.zcml', package=Products.GenericSetup)
 
 Initialize our package for zope:
 
@@ -131,6 +133,14 @@ Now let's say that shibboleth has set the correct information in the REQUEST. We
 
     >>> app.REQUEST.environ['HTTP_KULMAIL'] = 'info@kuleuven.be'
     >>> app.REQUEST.environ['HTTP_KULFULLNAME'] = 'John Foo'
+    >>> userPropertySheet = shibUserProps.getPropertiesForUser(user)
+    >>> userPropertySheet.propertyItems()
+    []
+
+Still nothing because we didn't set the properties on the object
+    >>> shibUserProps.manage_addProperty('HTTP_KULMAIL', 'mail', 'string')
+    >>> shibUserProps.manage_addProperty('HTTP_KULFULLNAME', 'fullname',
+    ...                                  'string')
     >>> userPropertySheet = shibUserProps.getPropertiesForUser(user)
     >>> userPropertySheet.propertyItems()
     [('mail', 'info@kuleuven.be'), ('fullname', 'John Foo')]

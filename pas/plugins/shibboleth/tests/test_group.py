@@ -15,14 +15,13 @@ from zope.configuration.xmlconfig import XMLConfig
 from zope.app.testing import placelesssetup
 from Testing.ZopeTestCase import FunctionalDocFileSuite
 from pas.plugins.shibboleth import group
+from pas.plugins.shibboleth.tests.base import ShibLayer
 
 def test_suite():
-    return unittest.TestSuite([
-        FunctionalDocFileSuite(
-           'README.txt',
-           package="pas.plugins.shibboleth"
-           ),
-        ])
+    ftest = FunctionalDocFileSuite('README.txt',
+                                   package="pas.plugins.shibboleth")
+    ftest.layer = ShibLayer
+    return unittest.TestSuite([ftest])
 
 if __name__ == '__main__':
     unittest.main(defaultTest='test_suite')

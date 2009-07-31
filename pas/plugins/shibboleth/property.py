@@ -15,12 +15,13 @@ from Products.PluggableAuthService.interfaces.plugins import IPropertiesPlugin
 from Products.PluggableAuthService.plugins.BasePlugin import BasePlugin
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.PluggableAuthService.UserPropertySheet import UserPropertySheet
+from pas.plugins.shibboleth.interfaces import IShibUserPropertiesManager
 
 manage_addShibUserPropertiesManagerForm = PageTemplateFile('www/ShibPropertiesManagerForm',
                                                globals())
 
 
-def manage_addShibUserProperties(self, id, title='',
+def manage_addShibUserProperties(self, id='shibproperties', title='',
                             REQUEST=None):
     """Add a  to a Pluggable Auth Service.
     """
@@ -43,8 +44,7 @@ class ShibUserPropertiesManager(BasePlugin):
     security = ClassSecurityInfo()
     meta_type = 'ShibPropertiesManager'
     manage_options = tuple(BasePlugin.manage_options)
-    user_properties_mapping = {'HTTP_KULMAIL': 'mail',
-                               'HTTP_KULFULLNAME': 'fullname'}
+    _properties = ()
 
     def __init__(self, id, title=None):
         self._id = self.id = id
@@ -52,10 +52,12 @@ class ShibUserPropertiesManager(BasePlugin):
 
     def _getShibProperties(self):
         userProperties = {}
-        for requestId, propertyId in self.user_properties_mapping.items():
-            requestValue = self.REQUEST.environ.get(requestId)
+        for propertyDict in self._propertyMap():
+            propertyName = propertyDict.get('id')
+            propertyValue = self.getProperty(propertyName)
+            requestValue = self.REQUEST.environ.get(propertyName)
             if requestValue is not None:
-                userProperties[propertyId] = requestValue
+                userProperties[propertyValue] = requestValue
         return userProperties
     #
     # IPropertiesPlugin implementation
@@ -78,6 +80,7 @@ class ShibUserPropertiesManager(BasePlugin):
         return UserPropertySheet(user.id, **self._getShibProperties())
 
 classImplements(ShibUserPropertiesManager,
+                IShibUserPropertiesManager,
                 IPropertiesPlugin)
 
 
