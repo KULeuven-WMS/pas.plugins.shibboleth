@@ -18,13 +18,15 @@ setup(name='pas.plugins.shibboleth',
       author_email='wms@icts.kuleuven.be',
       url='https://wms.cc.kuleuven.be/repo2/wms/packages/pas.plugins.shibboleth',
       license='GPL',
-      packages=find_packages(exclude=['ez_setup']),
+      package_dir = {'': 'src'},
+      packages=find_packages('src', exclude=['ez_setup']),
       namespace_packages=['pas', 'pas.plugins'],
       include_package_data=True,
       zip_safe=False,
       install_requires=[
           'setuptools',
-          'Products.PluggableAuthService'
+          'Products.PluggableAuthService',
+          'Products.GenericSetup'
           # -*- Extra requirements: -*-
       ],
       entry_points="""
