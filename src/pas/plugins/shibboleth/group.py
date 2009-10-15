@@ -71,6 +71,8 @@ class ShibGroupManager(BasePlugin, Cacheable):
             groups = self.REQUEST.environ.get('HTTP_KULOUNUMBER')
             if groups:
                 groups = groups.split(';')
+            else:
+                groups = []
         else:
             return ()
         groups = tuple(groups)
