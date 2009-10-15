@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.2 (unreleased)
+0.2 (2009-10-15)
 ----------------
 
 - Fix for import step, do not install plugin if already present
