@@ -43,6 +43,7 @@ def importShibbolethPropertiesSettings(context):
     uf = getattr(aq_base(container), 'acl_users', None)
 
     if uf is not None:
-        manage_addShibUserProperties(uf)
+        if 'shibproperties' not in uf.objectIds():
+            manage_addShibUserProperties(uf)
         shibproperties = getattr(uf, 'shibproperties')
         importObjects(shibproperties, '', context)
