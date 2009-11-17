@@ -157,3 +157,56 @@ Same if we query all the plugins implementing IPropertiesPlugin:
     ...     else:
     ...         print data
     [('mail', 'info@kuleuven.be'), ('fullname', 'John Foo')]
+
+
+User enumeration plugin
+-----------------------
+
+Once somebody login into Plone, CMF call getMemberById which calls PAS that
+does a user enumeration. The shibboleth plugin is able to provide an
+enumeration only for the logged in user and thus only replies if exact match is
+True
+
+Create the shib user propeties manager:
+
+    >>> from pas.plugins.shibboleth.enumeration import manage_addShibUserEnumerationManager
+    >>> manage_addShibUserEnumerationManager(uf, 'shib_user_enum')
+    >>> shibUserEnumeration = uf.shib_user_enum
+
+Activate our plugin:
+
+    >>> from Products.PluggableAuthService.interfaces.plugins import IUserEnumerationPlugin
+    >>> plugins.activatePlugin(IUserEnumerationPlugin, 'shib_user_enum')
+    >>> plugins.listPlugins(IUserEnumerationPlugin)
+    [('users', <ZODBUserManager at /folder2/acl_users/users>), ('shib_user_enum', <ShibUserEnumerationManager at /folder2/acl_users/shib_user_enum>)]
+
+By default the plugin will return an empty tuple if the request don't have shib information:
+
+    >>> shibUserEnumeration.enumerateUsers()
+    ()
+
+Even if was ask for the exact match:
+
+    >>> shibUserEnumeration.enumerateUsers(login='foobar', exact_match=True)
+    ()
+
+Let's add some shibboleth informations inside the REQUEST:
+
+    >>> app.REQUEST.environ['HTTP_EPPN'] = 'u007@kuleuven.be'
+
+Non exact match doesnt return anything:
+
+    >>> shibUserEnumeration.enumerateUsers()
+    ()
+
+Exact match for another user doesn't return anything:
+
+    >>> shibUserEnumeration.enumerateUsers(login='u999999@kuleuven.be',
+    ...                                    exact_match=True)
+    ()
+
+So it really returns info if we ask the enumerateUser for the logged in user:
+
+    >>> shibUserEnumeration.enumerateUsers(login='u007@kuleuven.be',
+    ...                                    exact_match=True)
+    ({'login': 'u007@kuleuven.be', 'pluginid': 'shib_user_enum', 'id': 'u007@kuleuven.be'},)
