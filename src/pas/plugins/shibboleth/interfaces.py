@@ -14,3 +14,9 @@ class IShibUserPropertiesManager(Interface):
     """
     Shibboleth user properties manager marker interface
     """
+
+
+class IShibRoleManager(Interface):
+    """
+    Shibboleth user role manager marker interface
+    """

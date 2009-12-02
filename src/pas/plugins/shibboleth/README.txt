@@ -210,3 +210,47 @@ So it really returns info if we ask the enumerateUser for the logged in user:
     >>> shibUserEnumeration.enumerateUsers(login='u007@kuleuven.be',
     ...                                    exact_match=True)
     ({'login': 'u007@kuleuven.be', 'pluginid': 'shib_user_enum', 'id': 'u007@kuleuven.be'},)
+
+
+Role Manager plugin
+-------------------
+
+Plone can also take into account that logged in user in Shibboleth should be considered as Member.
+This is what the role manager plugin does.
+
+Create the shib role manager:
+
+    >>> from pas.plugins.shibboleth.role import manage_addShibRoleManager
+    >>> manage_addShibRoleManager(uf, 'shib_role')
+    >>> shibRole = uf.shib_role
+
+Activate our plugin:
+
+    >>> from Products.PluggableAuthService.interfaces.plugins import IRolesPlugin
+    >>> plugins.activatePlugin(IRolesPlugin, 'shib_role')
+    >>> plugins.listPlugins(IRolesPlugin)
+    [('roles', <ZODBRoleManager at /folder2/acl_users/roles>), ('shib_role', <ShibRoleManager at /folder2/acl_users/shib_role>)]
+
+By default the plugin will return an empty tuple if the request don't have shib information:
+
+Try to get the group from another user:
+
+    >>> from Products.PluggableAuthService.plugins.tests.helpers import DummyUser
+    >>> user = DummyUser('userid')
+    >>> shibRole.getRolesForPrincipal(user)
+    ()
+
+Try to get the group from the current user *without* shibboleth headers:
+
+    >>> from Testing.ZopeTestCase import user_name
+    >>> user = uf.getUser(user_name)
+    >>> shibRole.getRolesForPrincipal(user)
+    ()
+
+It still doesn't work because Shibboleth needs to provide the current logged in user information
+inside the REQUEST:
+
+    >>> app.REQUEST.environ['HTTP_EPPN'] = user_name
+    >>> user = uf.getUser(user_name)
+    >>> shibRole.getRolesForPrincipal(user)
+    ('Member', 'Anonymous')

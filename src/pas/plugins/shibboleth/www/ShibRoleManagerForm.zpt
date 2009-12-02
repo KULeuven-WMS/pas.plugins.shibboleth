@@ -1,0 +1,21 @@
+<html
+ xmlns:tal="http://xml.zope.org/namespaces/tal"
+ xmlns:metal="http://xml.zope.org/namespaces/metal">
+<head>
+  <title>Add a Shibboleth Role Manager</title>
+</head>
+<body>
+
+<h2>Add Shibboleth Role Manager</h2>
+
+<form action="manage_addShibRoleManager" method="POST">
+ <div>
+   Id: <input type="text" value="" name="id" />
+ </div>
+
+ <input type="submit" name="submit" value=" Add "/>
+
+</form>
+
+</body>
+</html>
