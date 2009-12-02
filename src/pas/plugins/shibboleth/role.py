@@ -40,6 +40,8 @@ class ShibRoleManager(BasePlugin):
 
 
     security = ClassSecurityInfo()
+    meta_type = 'ShibRoleManager'
+    manage_options = (BasePlugin.manage_options, )
 
     def __init__(self, id, title=None):
         self._id = self.id = id
