@@ -57,6 +57,8 @@ class ShibUserEnumerationManager(BasePlugin, Cacheable):
 
     def enumerateUsers(self, id=None, login=None, exact_match=False,
                        sort_by=None, max_results=None, **kw):
+        if login is None and id is not None:
+            login = id
         if login is not None and exact_match and \
            login == self.REQUEST.environ.get('HTTP_EPPN'):
                 return ({'id': login,

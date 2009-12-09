@@ -211,6 +211,12 @@ So it really returns info if we ask the enumerateUser for the logged in user:
     ...                                    exact_match=True)
     ({'login': 'u007@kuleuven.be', 'pluginid': 'shib_user_enum', 'id': 'u007@kuleuven.be'},)
 
+And if we pass the id it should be the same:
+
+    >>> shibUserEnumeration.enumerateUsers(id='u007@kuleuven.be',
+    ...                                    exact_match=True)
+    ({'login': 'u007@kuleuven.be', 'pluginid': 'shib_user_enum', 'id': 'u007@kuleuven.be'},)
+
 
 Role Manager plugin
 -------------------
