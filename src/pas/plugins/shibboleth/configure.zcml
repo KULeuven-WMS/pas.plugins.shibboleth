@@ -15,6 +15,17 @@
        description="Import properties for shibboleth properties setting"
        handler=".exportimport.importShibbolethPropertiesSettings"
        />
+    
+    <adapter 
+      factory=".exportimport.ShibUserPropertiesExportImport"
+      for=".property.ShibUserPropertiesManager" 
+      provides="Products.GenericSetup.interfaces.IFilesystemImporter"/>       
+
+    <adapter 
+      factory=".exportimport.ShibUserPropertiesExportImport"
+      for=".property.ShibUserPropertiesManager" 
+      provides="Products.GenericSetup.interfaces.IFilesystemExporter"/>       
+
   </configure>
 
 </configure>

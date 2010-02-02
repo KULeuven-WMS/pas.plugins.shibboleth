@@ -3,18 +3,40 @@
 pas.plugins.shibboleth
 
 Licensed under the GPL license, see LICENCE.txt for more details.
-Copyright by Affinitic sprl
-
-$Id: event.py 67630 2006-04-27 00:54:03Z jfroche $
 """
+import os
+
 from Acquisition import aq_base
+
+from zope.interface import implements
+from zope.component import adapts
+
+from Products.GenericSetup.interfaces import ISetupEnviron
+from Products.GenericSetup.interfaces import IFilesystemImporter
+from Products.GenericSetup.interfaces import IFilesystemExporter
 from Products.GenericSetup.utils import importObjects
+from Products.GenericSetup.utils import exportObjects
 from Products.GenericSetup.utils import PropertyManagerHelpers
+from Products.GenericSetup.utils import XMLAdapterBase
+
 from pas.plugins.shibboleth.interfaces import IShibUserPropertiesManager
 from pas.plugins.shibboleth.property import manage_addShibUserProperties
-from Products.GenericSetup.utils import XMLAdapterBase
-from zope.component import adapts
-from Products.GenericSetup.interfaces import ISetupEnviron
+
+
+class ShibUserPropertiesExportImport(object):
+    implements(IFilesystemExporter, IFilesystemImporter)
+
+    def __init__(self, context):
+        self.context = context
+
+    def export(self, export_context, subdir, root=False):
+        exportObjects(self.context, subdir + os.sep, export_context)
+
+    def import_(self, import_context, subdir, root=False):
+        importObjects(self.context, subdir + os.sep, import_context)
+
+    def listExportableItems(self):
+        return ()
 
 
 class ShibPropertiesXMLAdapter(XMLAdapterBase, PropertyManagerHelpers):
