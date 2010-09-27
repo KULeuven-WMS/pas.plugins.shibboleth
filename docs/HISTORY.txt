@@ -1,11 +1,10 @@
 Changelog
 =========
 
-0.8 (unreleased)
+0.8 (2010-09-27)
 ----------------
 
-- Nothing changed yet.
-
+- add generic setup export import
 
 0.7 (2009-12-09)
 ----------------
