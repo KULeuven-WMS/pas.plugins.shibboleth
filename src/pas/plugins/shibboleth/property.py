@@ -50,14 +50,16 @@ class ShibUserPropertiesManager(BasePlugin):
         self._id = self.id = id
         self.title = title
 
-    def _getShibProperties(self):
+    def _getShibProperties(self, userId):
         userProperties = {}
         for propertyDict in self._propertyMap():
             propertyName = propertyDict.get('id')
             propertyValue = self.getProperty(propertyName)
             requestValue = self.REQUEST.environ.get(propertyName)
-            if requestValue is not None:
+            if requestValue:
                 userProperties[propertyValue] = requestValue
+            else:
+                logger.warning('Property %s has no value for user %s' % (propertyName, userId))
         return userProperties
     #
     # IPropertiesPlugin implementation
@@ -77,8 +79,9 @@ class ShibUserPropertiesManager(BasePlugin):
         o May assign properties based on values in the REQUEST object, if
           present
         """
-        if user.getId() == self.REQUEST.environ.get('HTTP_EPPN'):
-            return UserPropertySheet(user.id, **self._getShibProperties())
+        userId = user.getId()
+        if userId == self.REQUEST.environ.get('HTTP_EPPN'):
+            return UserPropertySheet(user.id, **self._getShibProperties(userId))
         else:
             return {}
 

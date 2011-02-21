@@ -145,9 +145,27 @@ Still nothing because we didn't set the properties on the object
     >>> userPropertySheet.propertyItems()
     [('mail', 'info@kuleuven.be'), ('fullname', 'John Foo')]
 
+Warning if one header is missing
+
+    >>> from zope.testing.loggingsupport import InstalledHandler 
+    >>> handler = InstalledHandler('pas.plugins.shibboleth')
+    >>> app.REQUEST.environ['HTTP_KULMAIL'] = 'info@kuleuven.be'
+    >>> app.REQUEST.environ['HTTP_KULFULLNAME'] = ''
+    >>> userPropertySheet = shibUserProps.getPropertiesForUser(user)
+    >>> userPropertySheet.propertyItems()
+    [('mail', 'info@kuleuven.be')]
+
+We have something in the log:
+
+    >>> len(handler.records)
+    1
+    >>> record = handler.records[0]
+    >>> print record.name, record.levelname, record.getMessage()
+    pas.plugins.shibboleth WARNING Property HTTP_KULFULLNAME has no value for user test_user_1_
 
 Same if we query all the plugins implementing IPropertiesPlugin:
 
+    >>> app.REQUEST.environ['HTTP_KULFULLNAME'] = 'John Foo'
     >>> propfinders = plugins.listPlugins( IPropertiesPlugin )
     >>> from Products.PluggableAuthService.interfaces.propertysheets import IPropertySheet
     >>> for propfinder_id, propfinder in propfinders:
