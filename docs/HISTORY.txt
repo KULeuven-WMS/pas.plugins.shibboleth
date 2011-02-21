@@ -4,7 +4,7 @@ Changelog
 0.9 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- add a warning message if one shib header is not set, refs #1431
 
 
 0.8 (2010-09-27)
