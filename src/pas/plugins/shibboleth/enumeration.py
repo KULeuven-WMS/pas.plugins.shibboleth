@@ -60,10 +60,11 @@ class ShibUserEnumerationManager(BasePlugin, Cacheable):
         if login is None and id is not None:
             login = id
         if login is not None and exact_match and \
+           hasattr(self, 'REQUEST') and \
            login == self.REQUEST.environ.get('HTTP_EPPN'):
-                return ({'id': login,
-                         'login': login,
-                         'pluginid': self.getId()}, )
+            return ({'id': login,
+                     'login': login,
+                     'pluginid': self.getId()}, )
         return ()
 
 classImplements(ShibUserEnumerationManager,

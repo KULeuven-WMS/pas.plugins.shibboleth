@@ -59,16 +59,20 @@ class ShibGroupManager(BasePlugin, Cacheable):
     def getGroupsForPrincipal(self, principal, request=None):
         """ get the group information from the REQUEST
         """
+        if request is None:
+            if hasattr(self, 'REQUEST'):
+                request = self.REQUEST
+            else:
+                return []
         view_name = createViewName('getGroupsForPrincipal',
                                    principal.getId())
         cached_info = self.ZCacheable_get(view_name)
         if cached_info is not None:
             return cached_info
         groups = []
-        authUser = self.REQUEST.environ.get('HTTP_EPPN')
+        authUser = request.environ.get('HTTP_EPPN')
         if authUser and authUser == principal.getId():
-            #groups = self.REQUEST.get('HTTP_KULPRIMONUMBER')
-            groups = self.REQUEST.environ.get('HTTP_KULOUNUMBER')
+            groups = request.environ.get('HTTP_KULOUNUMBER')
             if groups:
                 groups = groups.split(';')
             else:

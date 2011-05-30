@@ -79,8 +79,13 @@ class ShibUserPropertiesManager(BasePlugin):
         o May assign properties based on values in the REQUEST object, if
           present
         """
+        if request is None:
+            if hasattr(self, 'REQUEST'):
+                request = self.REQUEST
+            else:
+                return {}
         userId = user.getId()
-        if userId == self.REQUEST.environ.get('HTTP_EPPN'):
+        if userId == request.environ.get('HTTP_EPPN'):
             return UserPropertySheet(user.id, **self._getShibProperties(userId))
         else:
             return {}

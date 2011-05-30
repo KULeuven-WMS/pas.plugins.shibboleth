@@ -54,7 +54,12 @@ class ShibRoleManager(BasePlugin):
 
     def getRolesForPrincipal(self, user, request=None):
         """ Fullfill RolesPlugin requirements """
-        if user.getId() == self.REQUEST.environ.get('HTTP_EPPN'):
+        if request is None:
+            if hasattr(self, 'REQUEST'):
+                request = self.REQUEST
+            else:
+                return ()
+        if user.getId() == request.environ.get('HTTP_EPPN'):
             return ('Member', 'Anonymous')
         else:
             return ()

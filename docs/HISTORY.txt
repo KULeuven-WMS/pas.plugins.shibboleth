@@ -4,7 +4,8 @@ Changelog
 0.8.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- check if the request is available before trying to extract information
+  out of it
 
 
 0.8.1 (2011-03-09)
