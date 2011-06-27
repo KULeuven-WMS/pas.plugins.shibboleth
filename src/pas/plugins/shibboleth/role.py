@@ -60,7 +60,7 @@ class ShibRoleManager(BasePlugin):
             else:
                 return ()
         if user.getId() == request.environ.get('HTTP_EPPN'):
-            return ('Member', 'Anonymous')
+            return ('Member', 'Authenticated')
         else:
             return ()
 

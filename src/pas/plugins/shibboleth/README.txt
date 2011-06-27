@@ -277,4 +277,4 @@ inside the REQUEST:
     >>> app.REQUEST.environ['HTTP_EPPN'] = user_name
     >>> user = uf.getUser(user_name)
     >>> shibRole.getRolesForPrincipal(user)
-    ('Member', 'Anonymous')
+    ('Member', 'Authenticated')
