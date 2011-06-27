@@ -5,10 +5,10 @@ version = '0.8.3dev'
 
 setup(name='pas.plugins.shibboleth',
       version=version,
-      description="Shibboleth groups and properties handler for Pluggable Authentication Service and PlonePAS",
+      description="Shibboleth groups and properties handler for "
+                  "Pluggable Authentication Service and PlonePAS",
       long_description=open("README.txt").read() + "\n" +
                        open(os.path.join("docs", "HISTORY.txt")).read(),
-      # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
         "Programming Language :: Python",
         "Topic :: Software Development :: Libraries :: Python Modules",
@@ -16,9 +16,10 @@ setup(name='pas.plugins.shibboleth',
       keywords='pas shibboleth plone',
       author='KULeuven ICTS',
       author_email='wms@icts.kuleuven.be',
-      url='https://wms.cc.kuleuven.be/repo2/wms/packages/pas.plugins.shibboleth',
+      url=(
+       'https://wms.cc.kuleuven.be/repo2/wms/packages/pas.plugins.shibboleth'),
       license='GPL',
-      package_dir = {'': 'src'},
+      package_dir={'': 'src'},
       packages=find_packages('src', exclude=['ez_setup']),
       namespace_packages=['pas', 'pas.plugins'],
       include_package_data=True,
@@ -29,6 +30,11 @@ setup(name='pas.plugins.shibboleth',
           'Products.GenericSetup'
           # -*- Extra requirements: -*-
       ],
+      extras_require=dict(
+         test=[
+             'zope.app.testing',
+             ],
+          ),
       entry_points="""
       # -*- Entry points: -*-
       """,
