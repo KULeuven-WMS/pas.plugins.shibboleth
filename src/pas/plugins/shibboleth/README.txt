@@ -1,21 +1,10 @@
 Set Up
 ------
 
-Load all of Five's configuration (this is a functional test):
-
-    >>> import Products.Five
-    >>> from Products.Five.zcml import load_config
-    >>> load_config('configure.zcml', package=Products.Five)
-    >>> import Products.GenericSetup
-    >>> load_config('meta.zcml', package=Products.GenericSetup)
-
-Initialize our package for zope:
-
-    >>> import pas.plugins.shibboleth
-    >>> load_config('configure.zcml', package=pas.plugins.shibboleth)
-
 Create a basic PAS folder in a new folder:
 
+    >>> from pas.plugins.shibboleth.testing import FUNCTIONAL_SHIB_WITH_ZCML
+    >>> app = FUNCTIONAL_SHIB_WITH_ZCML['app']
     >>> app.manage_addFolder('folder2')
     >>> folder = app.folder2
     >>> factory = folder.manage_addProduct['PluggableAuthService']
@@ -46,6 +35,7 @@ Create our user:
     >>> from Testing.ZopeTestCase import user_role
     >>> uf = folder.acl_users
     >>> uf._doAddUser(user_name, user_password, [user_role], [])
+    <PropertiedUser 'test_user_1_'>
 
 Group Manager
 -------------

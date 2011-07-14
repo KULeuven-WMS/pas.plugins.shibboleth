@@ -7,8 +7,11 @@ Copyright by Affinitic sprl
 
 $Id: event.py 67630 2006-04-27 00:54:03Z jfroche $
 """
-from Products.GenericSetup.testing import BodyAdapterTestCase
-from pas.plugins.shibboleth.tests.base import ShibLayer
+from unittest import TestCase
+from zope.component import getMultiAdapter
+from Products.GenericSetup.interfaces import IBody
+from Products.GenericSetup.testing import DummySetupEnviron
+from pas.plugins.shibboleth.testing import SHIB_WITH_ZCML
 
 _PROPERTIES_BODY = u"""<?xml version="1.0"?>
 <shibproperties>
@@ -18,8 +21,37 @@ _PROPERTIES_BODY = u"""<?xml version="1.0"?>
 """.encode('utf-8')
 
 
+class BodyAdapterTestCase(TestCase):
+
+    def test_body_get(self):
+        self._populate(self._obj)
+        context = DummySetupEnviron()
+        adapted = getMultiAdapter((self._obj, context), IBody)
+        self.assertEqual(adapted.body, self._BODY)
+
+    def test_body_set(self):
+        context = DummySetupEnviron()
+        adapted = getMultiAdapter((self._obj, context), IBody)
+        adapted.body = self._BODY
+        self._verifyImport(self._obj)
+        self.assertEqual(adapted.body, self._BODY)
+
+        # now in update mode
+        context._should_purge = False
+        adapted = getMultiAdapter((self._obj, context), IBody)
+        adapted.body = self._BODY
+        self._verifyImport(self._obj)
+        self.assertEqual(adapted.body, self._BODY)
+
+        # and again in update mode
+        adapted = getMultiAdapter((self._obj, context), IBody)
+        adapted.body = self._BODY
+        self._verifyImport(self._obj)
+        self.assertEqual(adapted.body, self._BODY)
+
+
 class PropertiesXMLAdapterTests(BodyAdapterTestCase):
-    layer = ShibLayer
+    layer = SHIB_WITH_ZCML
 
     def _getTargetClass(self):
         from pas.plugins.shibboleth.exportimport import ShibPropertiesXMLAdapter

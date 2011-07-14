@@ -4,6 +4,12 @@ Changelog
 0.8.2 (unreleased)
 ------------------
 
+- Upgrade to 4.1
+
+- Use `plone.testing` to create test layer
+
+- Assign role Authenticated to logged in users
+
 - check if the request is available before trying to extract information
   out of it
 

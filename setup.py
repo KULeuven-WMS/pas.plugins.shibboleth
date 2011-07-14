@@ -28,14 +28,6 @@ setup(name='pas.plugins.shibboleth',
           'setuptools',
           'Products.PluggableAuthService',
           'Products.GenericSetup'
-          # -*- Extra requirements: -*-
       ],
       extras_require=dict(
-         test=[
-             'zope.app.testing',
-             ],
-          ),
-      entry_points="""
-      # -*- Entry points: -*-
-      """,
-      )
+         test=['plone.testing']))
