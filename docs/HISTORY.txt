@@ -13,6 +13,8 @@ Changelog
 - check if the request is available before trying to extract information
   out of it
 
+- fix coverage report
+
 
 0.8.1 (2011-03-09)
 ------------------
