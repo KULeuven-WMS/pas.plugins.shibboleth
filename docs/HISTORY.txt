@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.8.2 (unreleased)
+0.8.3 (unreleased)
 ------------------
 
 - Upgrade to 4.1
@@ -10,10 +10,13 @@ Changelog
 
 - Assign role Authenticated to logged in users
 
+- fix coverage report
+
+0.8.2 (2011-05-30)
+------------------
+
 - check if the request is available before trying to extract information
   out of it
-
-- fix coverage report
 
 
 0.8.1 (2011-03-09)
