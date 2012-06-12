@@ -8,6 +8,7 @@ Copyright by Affinitic sprl
 $Id: event.py 67630 2006-04-27 00:54:03Z jfroche $
 """
 import logging
+from zope.component import queryAdapter
 from AccessControl import ClassSecurityInfo
 from App.class_init import default__class_init__ as InitializeClass
 from Products.PluggableAuthService.utils import classImplements
@@ -15,7 +16,7 @@ from Products.PluggableAuthService.interfaces.plugins import IPropertiesPlugin
 from Products.PluggableAuthService.plugins.BasePlugin import BasePlugin
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.PluggableAuthService.UserPropertySheet import UserPropertySheet
-from pas.plugins.shibboleth.interfaces import IShibUserPropertiesManager
+from pas.plugins.shibboleth.interfaces import IShibUserPropertiesManager, IUserPropertyFilter
 
 manage_addShibUserPropertiesManagerForm = PageTemplateFile('www/ShibPropertiesManagerForm',
                                                globals())
@@ -56,6 +57,9 @@ class ShibUserPropertiesManager(BasePlugin):
             propertyName = propertyDict.get('id')
             propertyValue = self.getProperty(propertyName)
             requestValue = self.REQUEST.environ.get(propertyName)
+            requestValue = queryAdapter(requestValue, IUserPropertyFilter,
+                          name=propertyName, default=requestValue)
+
             if requestValue:
                 userProperties[propertyValue] = requestValue
             else:

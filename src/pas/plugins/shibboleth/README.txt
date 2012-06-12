@@ -167,6 +167,26 @@ Same if we query all the plugins implementing IPropertiesPlugin:
     [('mail', 'info@kuleuven.be'), ('fullname', 'John Foo')]
 
 
+We can use the IUserPropertyFilter adapter to filter out values in the REQUEST
+headers::
+
+    >>> app.REQUEST.environ['HTTP_KULMAIL'] = ['foo@kuleuven.be', 'info@kuleuven.be']
+    >>> def filterEmail(emails):
+    ...     return emails[0]
+    >>> from pas.plugins.shibboleth.interfaces import IUserPropertyFilter
+    >>> from zope.component import provideAdapter
+    >>> provideAdapter(filterEmail, adapts=(list, ), provides=IUserPropertyFilter,
+    ...                name='HTTP_KULMAIL')
+
+    >>> for propfinder_id, propfinder in propfinders:
+    ...     data = propfinder.getPropertiesForUser(user)
+    ...     if IPropertySheet.providedBy(data):
+    ...         print data.propertyItems()
+    ...     else:
+    ...         print data
+    [('mail', 'foo@kuleuven.be'), ('fullname', 'John Foo')]
+
+
 User enumeration plugin
 -----------------------
 
