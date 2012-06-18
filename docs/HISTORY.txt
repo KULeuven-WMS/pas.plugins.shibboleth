@@ -12,6 +12,8 @@ Changelog
 
 - fix coverage report
 
+- add adapter query for e-mail addresses
+
 0.8.2 (2011-05-30)
 ------------------
 
