@@ -16,9 +16,11 @@ from Products.PluggableAuthService.interfaces.plugins import IPropertiesPlugin
 from Products.PluggableAuthService.plugins.BasePlugin import BasePlugin
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.PluggableAuthService.UserPropertySheet import UserPropertySheet
-from pas.plugins.shibboleth.interfaces import IShibUserPropertiesManager, IUserPropertyFilter
+from pas.plugins.shibboleth.interfaces import IShibUserPropertiesManager,\
+        IUserPropertyFilter
 
-manage_addShibUserPropertiesManagerForm = PageTemplateFile('www/ShibPropertiesManagerForm',
+manage_addShibUserPropertiesManagerForm = \
+        PageTemplateFile('www/ShibPropertiesManagerForm',
                                                globals())
 
 
@@ -63,7 +65,8 @@ class ShibUserPropertiesManager(BasePlugin):
             if requestValue:
                 userProperties[propertyValue] = requestValue
             else:
-                logger.warning('Property %s has no value for user %s' % (propertyName, userId))
+                logger.warning('Property %s has no value for user %s' % (
+                    propertyName, userId))
         return userProperties
     #
     # IPropertiesPlugin implementation
@@ -90,7 +93,8 @@ class ShibUserPropertiesManager(BasePlugin):
                 return {}
         userId = user.getId()
         if userId == request.environ.get('HTTP_EPPN'):
-            return UserPropertySheet(user.id, **self._getShibProperties(userId))
+            return UserPropertySheet(user.id,
+                    **self._getShibProperties(userId))
         else:
             return {}
 
