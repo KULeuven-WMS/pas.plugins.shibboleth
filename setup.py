@@ -27,7 +27,8 @@ setup(name='pas.plugins.shibboleth',
       install_requires=[
           'setuptools',
           'Products.PluggableAuthService',
-          'Products.GenericSetup'
+          'Products.PlonePAS',
+          'Products.GenericSetup',
       ],
       extras_require=dict(
          test=['plone.testing']))
