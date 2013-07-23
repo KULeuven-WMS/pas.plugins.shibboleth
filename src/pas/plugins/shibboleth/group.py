@@ -90,7 +90,7 @@ class ShibGroupManager(BasePlugin, Cacheable):
             groups = request.environ.get('HTTP_KULOUNUMBER')
             if groups:
                 groups = groups.split(';')
-                groups.extends(self.getGroupAffilitations(request, groups))
+                groups.extend(self.getGroupAffiliations(request, groups))
             else:
                 groups = []
         else:
