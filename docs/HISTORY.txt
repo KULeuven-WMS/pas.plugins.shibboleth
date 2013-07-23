@@ -4,7 +4,7 @@ Changelog
 0.8.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Implementation for business groups (employees affiliations) added.
 
 
 0.8.4 (2012-06-18)
