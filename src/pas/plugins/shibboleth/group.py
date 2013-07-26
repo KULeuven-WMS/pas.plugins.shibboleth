@@ -54,21 +54,6 @@ class ShibGroupManager(BasePlugin, Cacheable):
         self._id = self.id = id
         self.title = title
 
-    def getGroupAffiliations(self, request, groups):
-        """ """
-        affiliations = request.environ.get('HTTP_KULEMPLOYEETYPE')
-        if not affiliations:
-            return []
-        affiliations = affiliations.split(';')
-        result = []
-        import itertools
-        for group, affiliation in itertools.product(groups, affiliations):
-            # shotcut for 4 emiritus statusses
-            if 'Emeritus' in affiliation:
-                affiliation = 'Emeritus'
-            result.append("%s|%s" % (group, affiliation))
-        return result
-
     #
     # IGroupsPlugin implementation
     #
@@ -93,7 +78,7 @@ class ShibGroupManager(BasePlugin, Cacheable):
             groups = request.environ.get('HTTP_KULOUNUMBER')
             if groups:
                 groups = groups.split(';')
-                groups.extend(self.getGroupAffiliations(request, groups))
+                groups.extend(self.getAffiliations(request, groups))
             else:
                 groups = []
         else:
@@ -101,6 +86,21 @@ class ShibGroupManager(BasePlugin, Cacheable):
         groups = tuple(groups)
         self.ZCacheable_set(groups, view_name)
         return groups
+
+    def getAffiliations(self, request, groups):
+        """ """
+        affiliations = request.environ.get('HTTP_KULEMPLOYEETYPE')
+        if not affiliations:
+            return []
+        affiliations = affiliations.split(';')
+        result = []
+        import itertools
+        for group, affiliation in itertools.product(groups, affiliations):
+            # shotcut for 4 emiritus statusses
+            if 'Emeritus' in affiliation:
+                affiliation = 'Emeritus'
+            result.append("%s|%s" % (group, affiliation))
+        return result
 
     #
     # IGroupsIntrospection implementation for business groups
