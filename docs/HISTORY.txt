@@ -4,7 +4,8 @@ Changelog
 0.8.5 (unreleased)
 ------------------
 
-- Implementation for business groups (employees affiliations) added.
+- Implementation for business groups (employees affiliations) added #853.
+- New bootstrap #2340.
 
 
 0.8.4 (2012-06-18)
@@ -19,6 +20,7 @@ Changelog
 - fix coverage report
 
 - add adapter query for e-mail addresses
+
 
 0.8.2 (2011-05-30)
 ------------------
