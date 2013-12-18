@@ -4,7 +4,8 @@ Changelog
 0.8.5 (unreleased)
 ------------------
 
-- Implementation for business groups (employees affiliations) added #853.
+- Implementation for business groups (affiliations) added #853.
+- Adjusted the above according to the IAM after integration #2479.
 - New bootstrap #2340.
 
 

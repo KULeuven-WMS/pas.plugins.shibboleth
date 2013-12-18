@@ -60,7 +60,7 @@ class ShibGroupManager(BasePlugin, Cacheable):
     security.declarePrivate('getGroupsForPrincipal')
 
     def getGroupsForPrincipal(self, principal, request=None):
-        """ get the group information from the REQUEST
+        """ get the unit information from REQUEST upon login
         """
         if request is None:
             if hasattr(self, 'REQUEST'):
@@ -88,17 +88,27 @@ class ShibGroupManager(BasePlugin, Cacheable):
         return groups
 
     def getAffiliations(self, request, groups):
-        """ """
-        affiliations = request.environ.get('HTTP_KULEMPLOYEETYPE')
-        if not affiliations:
+        """ get affiliation information from REQUEST upon login """
+        raw_affiliations = request.environ.get('HTTP_AFFILIATION')
+        if not raw_affiliations:
             return []
-        affiliations = affiliations.split(';')
+        raw_affiliations = raw_affiliations.split(';')
+        affiliations = [af[:af.find('@')].upper() for af in raw_affiliations
+                        if af in ('staff@kuleuven.be',
+                                  'zap@kuleuven.be',
+                                  'bap@kuleuven.be',
+                                  'aap@kuleuven.be',
+                                  'op3@kuleuven.be',
+                                  'affiliate@kuleuven.be')
+                        ]
         result = []
         import itertools
         for group, affiliation in itertools.product(groups, affiliations):
-            # shotcut for 4 emiritus statusses
-            if 'Emeritus' in affiliation:
-                affiliation = 'Emeritus'
+            # map affiliations with their display names
+            if 'STAFF' in affiliation:
+                affiliation = 'ATP'
+            if 'AFFILIATE' in affiliation:
+                affiliation = 'Affiliate'
             result.append("%s|%s" % (group, affiliation))
         return result
 
