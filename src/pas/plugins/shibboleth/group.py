@@ -141,6 +141,12 @@ class ShibGroupManager(BasePlugin, Cacheable):
         """
         return []
 
+    def getGroups(self):
+        return []
+
+    def getGroupIds(self):
+        return []
+
 
 classImplements(ShibGroupManager,
                 IGroupsPlugin,
