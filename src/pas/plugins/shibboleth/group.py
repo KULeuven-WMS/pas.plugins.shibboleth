@@ -89,17 +89,18 @@ class ShibGroupManager(BasePlugin, Cacheable):
 
     def getAffiliations(self, request, groups):
         """ get affiliation information from REQUEST upon login """
-        raw_affiliations = request.environ.get('HTTP_AFFILIATION')
-        if not raw_affiliations:
+        usr_affiliations = request.environ.get('HTTP_AFFILIATION')
+        if not usr_affiliations:
             return []
-        raw_affiliations = raw_affiliations.split(';')
-        affiliations = [af[:af.find('@')].upper() for af in raw_affiliations
-                        if af in ('staff@kuleuven.be',
-                                  'zap@kuleuven.be',
-                                  'bap@kuleuven.be',
-                                  'aap@kuleuven.be',
-                                  'op3@kuleuven.be',
-                                  'affiliate@kuleuven.be')
+        usr_affiliations = usr_affiliations.split(';')
+        # we consider only six kuleuven scoped affiliations
+        affiliations = [aff[:aff.find('@')].upper() for aff in usr_affiliations
+                        if aff in ('staff@kuleuven.be',
+                                   'zap@kuleuven.be',
+                                   'bap@kuleuven.be',
+                                   'aap@kuleuven.be',
+                                   'op3@kuleuven.be',
+                                   'affiliate@kuleuven.be')
                         ]
         result = []
         import itertools
