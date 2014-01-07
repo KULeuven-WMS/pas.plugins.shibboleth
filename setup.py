@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-version = '0.8.5dev'
+version = '0.8.5'
 
 setup(name='pas.plugins.shibboleth',
       version=version,

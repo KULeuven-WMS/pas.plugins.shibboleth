@@ -1,7 +1,7 @@
 Changelog
 =========
 
-0.8.5 (unreleased)
+0.8.5 (2014-01-07)
 ------------------
 
 - Implementation for business groups (affiliations) added #853.
