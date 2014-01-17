@@ -4,7 +4,7 @@ Changelog
 0.8.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- New bootstrap and switched to plone432.
 
 
 0.8.5 (2014-01-07)
