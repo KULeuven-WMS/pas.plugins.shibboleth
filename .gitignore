@@ -8,3 +8,6 @@ local/
 parts/
 src/pas.plugins.shibboleth.egg-info/
 .mr.developer.cfg
+.coverage
+buildout-cache/
+htmlcov/
