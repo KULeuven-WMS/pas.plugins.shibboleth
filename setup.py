@@ -7,7 +7,7 @@ setup(name='pas.plugins.shibboleth',
       version=version,
       description="Shibboleth groups and properties handler for "
                   "Pluggable Authentication Service and PlonePAS",
-      long_description=open("README.txt").read() + "\n" +
+      long_description=open("README.rst").read() + "\n" +
                        open(os.path.join("docs", "HISTORY.txt")).read(),
       classifiers=[
         "Programming Language :: Python",
