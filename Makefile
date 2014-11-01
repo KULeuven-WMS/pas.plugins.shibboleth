@@ -28,7 +28,7 @@ $(python):
 	virtualenv -p python$(version) --no-site-packages .
 	@touch $@
 
-tests: .installed.cfg
+tests:
 	@bin/test
 	@bin/code-analysis
 
