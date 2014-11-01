@@ -11,6 +11,11 @@ This package provides plugins needed for shibboleth authentication on a Plone si
 - user properties manager plugin
 - role manager plugin
 
+Credits
+=======
+
+All this was funded by ICTS Team of the Univeristy of Leuven - KULeuven (https://admin.kuleuven.be/icts)
+
 Tests
 =====
 
