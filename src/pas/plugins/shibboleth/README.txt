@@ -137,7 +137,7 @@ Still nothing because we didn't set the properties on the object
 
 Warning if one header is missing
 
-    >>> from zope.testing.loggingsupport import InstalledHandler 
+    >>> from zope.testing.loggingsupport import InstalledHandler
     >>> handler = InstalledHandler('pas.plugins.shibboleth')
     >>> app.REQUEST.environ['HTTP_KULMAIL'] = 'info@kuleuven.be'
     >>> app.REQUEST.environ['HTTP_KULFULLNAME'] = ''
