@@ -1,2 +1,9 @@
 recursive-include docs *
 recursive-include src *
+include *.py
+include .travis.yml
+include buildout.cfg
+include jenkins.cfg
+include orig_buildout.cfg
+include travis.cfg
+include versions-stable.cfg
