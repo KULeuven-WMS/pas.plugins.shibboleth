@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Products.PluggableAuthService import registerMultiPlugin
 from AccessControl.Permissions import add_user_folders
 from pas.plugins.shibboleth import group, property, enumeration, role
