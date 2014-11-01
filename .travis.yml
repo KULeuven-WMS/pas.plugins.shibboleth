@@ -6,7 +6,7 @@ install:
 - test-env/bin/python bootstrap.py -c travis.cfg
 - bin/buildout -N -t 5 -c travis.cfg
 script:
-  - make test
+  - make tests
   - make coverage
 
 after_success:

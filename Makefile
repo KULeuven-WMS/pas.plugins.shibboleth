@@ -7,10 +7,12 @@ options =
 
 all: docs tests
 
-coverage: htmlcov/index.html
+coverage:
+	bin/coverage
+	bin/report
 
 htmlcov/index.html: src/pas/plugins/shibboleth/*.py bin/coverage
-	@bin/coverage run --source=./src/pas/plugins/shibboleth/ --branch bin/test
+	@bin/coverage run bin/test
 	@bin/coverage html -i
 	@touch $@
 	@echo "Coverage report was generated at '$@'."
