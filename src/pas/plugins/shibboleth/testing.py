@@ -8,7 +8,9 @@ import pas.plugins.shibboleth
 from plone.testing import zca, z2, Layer
 
 
-SHIB_WITH_ZCML = zca.ZCMLSandbox(name='SHIB_WITH_ZCML', package=pas.plugins.shibboleth, filename='testing.zcml')
+SHIB_WITH_ZCML = zca.ZCMLSandbox(name='SHIB_WITH_ZCML',
+                                 package=pas.plugins.shibboleth,
+                                 filename='testing.zcml')
 
 
 class ShibbolethProduct(Layer):
@@ -18,4 +20,7 @@ class ShibbolethProduct(Layer):
             z2.installProduct(app, 'Products.PluggableAuthService')
 
 SHIBBOLETH_PRODUCT = ShibbolethProduct(name='SHIBBOLETH_PRODUCT')
-FUNCTIONAL_SHIB_WITH_ZCML = z2.FunctionalTesting(bases=(z2.STARTUP, SHIB_WITH_ZCML, SHIBBOLETH_PRODUCT), name='FUNCTIONAL_SHIB_WITH_ZCML')
+FUNCTIONAL_SHIB_WITH_ZCML = z2.FunctionalTesting(bases=(z2.STARTUP,
+                                                        SHIB_WITH_ZCML,
+                                                        SHIBBOLETH_PRODUCT),
+                                                 name='FUNCTIONAL_SHIB_WITH_ZCML')  # NOQA

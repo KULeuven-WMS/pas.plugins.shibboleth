@@ -17,7 +17,7 @@ from Products.PluggableAuthService.utils import classImplements
 from pas.plugins.shibboleth.interfaces import IShibRoleManager
 
 manage_addShibRoleManagerForm = PageTemplateFile('www/ShibRoleManagerForm',
-                                               globals())
+                                                 globals())
 
 
 def manage_addShibRoleManager(self, id='shibrole', title='', REQUEST=None):
@@ -26,18 +26,16 @@ def manage_addShibRoleManager(self, id='shibrole', title='', REQUEST=None):
     rm = ShibRoleManager(id, title)
     self._setObject(rm.getId(), rm)
     if REQUEST is not None:
-        REQUEST['RESPONSE'].redirect(
-                                '%s/manage_workspace'
-                                '?manage_tabs_message='
-                                'ShibRoleManager+added.'
-                            % self.absolute_url())
+        REQUEST['RESPONSE'].redirect('%s/manage_workspace'
+                                     '?manage_tabs_message='
+                                     'ShibRoleManager+added.'
+                                     % self.absolute_url())
 
 
 class ShibRoleManager(BasePlugin):
     """
     A role manager plugin for shibboleth
     """
-
 
     security = ClassSecurityInfo()
     meta_type = 'ShibRoleManager'

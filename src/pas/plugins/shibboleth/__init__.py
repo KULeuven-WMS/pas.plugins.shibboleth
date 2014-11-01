@@ -28,8 +28,8 @@ def initialize(context):
     context.registerClass(enumeration.ShibUserEnumerationManager,
                           permission=add_user_folders,
                           constructors=(
-                              enumeration.manage_addShibUserEnumerationManagerForm,
-                              enumeration.manage_addShibUserEnumerationManager),
+                              enumeration.manage_addShibUserEnumerationManagerForm,  # NOQA
+                              enumeration.manage_addShibUserEnumerationManager),     # NOQA
                           visibility=None,
                           icon='')
     context.registerClass(role.ShibRoleManager,

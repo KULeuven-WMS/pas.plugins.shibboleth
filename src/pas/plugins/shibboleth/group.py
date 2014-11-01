@@ -22,7 +22,7 @@ from Products.PluggableAuthService.utils import createViewName
 import logging
 
 manage_addShibGroupManagerForm = PageTemplateFile('www/ShibGroupManagerForm',
-                                               globals())
+                                                  globals())
 
 
 def manage_addShibGroupManager(self, id, title='', REQUEST=None):
@@ -31,11 +31,10 @@ def manage_addShibGroupManager(self, id, title='', REQUEST=None):
     rm = ShibGroupManager(id, title)
     self._setObject(rm.getId(), rm)
     if REQUEST is not None:
-        REQUEST['RESPONSE'].redirect(
-                                '%s/manage_workspace'
-                                '?manage_tabs_message='
-                                'SAGroupManager+added.'
-                            % self.absolute_url())
+        REQUEST['RESPONSE'].redirect('%s/manage_workspace'
+                                     '?manage_tabs_message='
+                                     'SAGroupManager+added.'
+                                     % self.absolute_url())
 
 logger = logging.getLogger('pas.plugins.shibboleth')
 
@@ -47,7 +46,7 @@ class ShibGroupManager(BasePlugin, Cacheable):
 
     security = ClassSecurityInfo()
     meta_type = 'ShibGroupManager'
-    manage_options = tuple(BasePlugin.manage_options +\
+    manage_options = tuple(BasePlugin.manage_options +
                            Cacheable.manage_options)
 
     def __init__(self, id, title=None):
@@ -133,7 +132,7 @@ class ShibGroupManager(BasePlugin, Cacheable):
             if unit:
                 unit_title = unit.getProperty('title')
             virt_group_title = "%s (%s)" % (unit_title, unit_affiliation)
-            return VirtualGroup(group_id, title=virt_group_title, \
+            return VirtualGroup(group_id, title=virt_group_title,
                                 description=virt_group_title)
 
     def getGroupMembers(self, group_id):

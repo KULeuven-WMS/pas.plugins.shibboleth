@@ -54,7 +54,7 @@ class PropertiesXMLAdapterTests(BodyAdapterTestCase):
     layer = SHIB_WITH_ZCML
 
     def _getTargetClass(self):
-        from pas.plugins.shibboleth.exportimport import ShibPropertiesXMLAdapter
+        from pas.plugins.shibboleth.exportimport import ShibPropertiesXMLAdapter  # NOQA
         return ShibPropertiesXMLAdapter
 
     def _populate(self, obj):

@@ -13,12 +13,13 @@ from App.class_init import default__class_init__ as InitializeClass
 
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.PluggableAuthService.utils import classImplements
-from Products.PluggableAuthService.interfaces.plugins import IUserEnumerationPlugin
+from Products.PluggableAuthService.interfaces.plugins import IUserEnumerationPlugin  # NOQA
 from Products.PluggableAuthService.plugins.BasePlugin import BasePlugin
 import logging
 
-manage_addShibUserEnumerationManagerForm = PageTemplateFile('www/ShibUserEnumerationManagerForm',
-                                               globals())
+manage_addShibUserEnumerationManagerForm = \
+    PageTemplateFile('www/ShibUserEnumerationManagerForm',
+                     globals())
 
 
 def manage_addShibUserEnumerationManager(self, id, title='', REQUEST=None):
@@ -28,10 +29,9 @@ def manage_addShibUserEnumerationManager(self, id, title='', REQUEST=None):
     self._setObject(rm.getId(), rm)
     if REQUEST is not None:
         REQUEST['RESPONSE'].redirect(
-                                '%s/manage_workspace'
-                                '?manage_tabs_message='
-                                'SAGroupManager+added.'
-                            % self.absolute_url())
+            '%s/manage_workspace'
+            '?manage_tabs_message='
+            'SAGroupManager+added.' % self.absolute_url())
 
 logger = logging.getLogger('pas.plugins.shibboleth')
 
@@ -43,7 +43,7 @@ class ShibUserEnumerationManager(BasePlugin, Cacheable):
 
     security = ClassSecurityInfo()
     meta_type = 'ShibUserEnumerationManager'
-    manage_options = tuple(BasePlugin.manage_options +\
+    manage_options = tuple(BasePlugin.manage_options +
                            Cacheable.manage_options)
 
     def __init__(self, id, title=None):

@@ -16,26 +16,26 @@ from Products.PluggableAuthService.interfaces.plugins import IPropertiesPlugin
 from Products.PluggableAuthService.plugins.BasePlugin import BasePlugin
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.PluggableAuthService.UserPropertySheet import UserPropertySheet
-from pas.plugins.shibboleth.interfaces import IShibUserPropertiesManager,\
-        IUserPropertyFilter
+from pas.plugins.shibboleth.interfaces import (IShibUserPropertiesManager,
+                                               IUserPropertyFilter)
 
 manage_addShibUserPropertiesManagerForm = \
-        PageTemplateFile('www/ShibPropertiesManagerForm',
-                                               globals())
+    PageTemplateFile('www/ShibPropertiesManagerForm',
+                     globals())
 
 
 def manage_addShibUserProperties(self, id='shibproperties', title='',
-                            REQUEST=None):
+                                 REQUEST=None):
     """Add a  to a Pluggable Auth Service.
     """
     rm = ShibUserPropertiesManager(id, title)
     self._setObject(rm.getId(), rm)
     if REQUEST is not None:
         REQUEST['RESPONSE'].redirect(
-                                '%s/manage_workspace'
-                                '?manage_tabs_message='
-                                'ShibUserPropertiesManager+added.'
-                            % self.absolute_url())
+            '%s/manage_workspace'
+            '?manage_tabs_message='
+            'ShibUserPropertiesManager+added.'
+            % self.absolute_url())
 
 logger = logging.getLogger('pas.plugins.shibboleth')
 
@@ -60,7 +60,8 @@ class ShibUserPropertiesManager(BasePlugin):
             propertyValue = self.getProperty(propertyName)
             requestValue = self.REQUEST.environ.get(propertyName)
             requestValue = queryAdapter(requestValue, IUserPropertyFilter,
-                          name=propertyName, default=requestValue)
+                                        name=propertyName,
+                                        default=requestValue)
 
             if requestValue:
                 userProperties[propertyValue] = requestValue
@@ -94,7 +95,7 @@ class ShibUserPropertiesManager(BasePlugin):
         userId = user.getId()
         if userId == request.environ.get('HTTP_EPPN'):
             return UserPropertySheet(user.id,
-                    **self._getShibProperties(userId))
+                                     **self._getShibProperties(userId))
         else:
             return {}
 

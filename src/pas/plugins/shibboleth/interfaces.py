@@ -21,6 +21,7 @@ class IShibRoleManager(Interface):
     Shibboleth user role manager marker interface
     """
 
+
 class IUserPropertyFilter(Interface):
     """
     Filter user properties content
