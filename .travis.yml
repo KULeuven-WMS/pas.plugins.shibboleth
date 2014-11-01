@@ -5,4 +5,17 @@ install:
 - mkdir -p buildout-cache/downloads
 - test-env/bin/python bootstrap.py -c travis.cfg
 - bin/buildout -N -t 5 -c travis.cfg
-script: bin/test
+script:
+  - make test
+  - make coverage
+
+after_success:
+ - pip install python-coveralls==2.4.0 || true
+ - coveralls || true
+
+notifications:
+  irc:
+    channels:
+      - "irc.freenode.org#affinitic"
+    template:
+      - "%{repository}/#%{build_number}/%{branch} (%{author}): %{message} %{build_url}"
