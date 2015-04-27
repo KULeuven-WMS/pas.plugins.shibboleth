@@ -11,7 +11,6 @@ from OFS.Cache import Cacheable
 from AccessControl import ClassSecurityInfo
 from App.class_init import default__class_init__ as InitializeClass
 
-from Products.CMFCore.utils import getToolByName
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 from Products.PluggableAuthService.utils import classImplements
 from Products.PluggableAuthService.interfaces.plugins import IGroupsPlugin
@@ -74,43 +73,42 @@ class ShibGroupManager(BasePlugin, Cacheable):
         groups = []
         authUser = request.environ.get('HTTP_EPPN')
         if authUser and authUser == principal.getId():
-            groups = request.environ.get('HTTP_KULOUNUMBER')
-            if groups:
-                groups = groups.split(';')
-                groups.extend(self.getAffiliations(request, groups))
-            else:
-                groups = []
+            units = request.environ.get('HTTP_KULOUNUMBER')
+            if units:
+                groups = units.split(';')
+            groups.extend(self.getAffiliations(request, units))
         else:
             return ()
         groups = tuple(groups)
         self.ZCacheable_set(groups, view_name)
         return groups
 
-    def getAffiliations(self, request, groups):
-        """ get affiliation information from REQUEST upon login """
-        usr_affiliations = request.environ.get('HTTP_AFFILIATION')
-        if not usr_affiliations:
+    def getAffiliations(self, request, units=None):
+        """ fetch and keep affiliations from REQUEST upon login """
+
+        unscoped_affiliations = request.environ.get(
+            'HTTP_UNSCOPED_AFFILIATION')
+        if not unscoped_affiliations:
             return []
-        usr_affiliations = usr_affiliations.split(';')
-        # we consider only six kuleuven scoped affiliations
-        affiliations = [aff[:aff.find('@')].upper() for aff in usr_affiliations
-                        if aff in ('staff@kuleuven.be',
-                                   'zap@kuleuven.be',
-                                   'bap@kuleuven.be',
-                                   'aap@kuleuven.be',
-                                   'op3@kuleuven.be',
-                                   'affiliate@kuleuven.be')
-                        ]
-        result = []
+
+        affiliations = unscoped_affiliations.split(';')
+        scoped_affiliations = request.environ.get('HTTP_AFFILIATION')
+        if scoped_affiliations:
+            affiliations.extend(scoped_affiliations.split(';'))
+
+        # kuleuven-specific implementation
+        # of employee affiliations combined with units
+        kul_affiliations = [aff[:aff.find('@')] for aff in affiliations
+                            if aff in ('staff@kuleuven.be',
+                                       'zap@kuleuven.be',
+                                       'bap@kuleuven.be',
+                                       'aap@kuleuven.be',
+                                       'op3@kuleuven.be')]
         import itertools
-        for group, affiliation in itertools.product(groups, affiliations):
-            # map affiliations with their display names
-            if 'STAFF' in affiliation:
-                affiliation = 'ATP'
-            if 'AFFILIATE' in affiliation:
-                affiliation = 'Affiliate'
-            result.append("%s|%s" % (group, affiliation))
-        return result
+        for unit, affiliation in itertools.product(units,
+                                                   kul_affiliations):
+            affiliations.append("%s|%s" % (unit, affiliation))
+        return affiliations
 
     #
     # IGroupsIntrospection implementation for business groups
@@ -118,32 +116,28 @@ class ShibGroupManager(BasePlugin, Cacheable):
     security.declarePrivate('getGroupById')
 
     def getGroupById(self, group_id):
-        """ for virtual groups formed as unit number plus affiliation
+        """ for groups with unit|affiliation
         """
         if not group_id:
             return None
 
         import re
         if re.match("\w+\|\w+", group_id):
-            unit_nr, unit_affiliation = group_id.split('|')
-            gtool = getToolByName(self, 'portal_groups')
-            unit = gtool.getGroupById(unit_nr)
-            unit_title = unit_nr
-            if unit:
-                unit_title = unit.getProperty('title')
-            virt_group_title = "%s (%s)" % (unit_title, unit_affiliation)
-            return VirtualGroup(group_id, title=virt_group_title,
-                                description=virt_group_title)
+            return VirtualGroup(group_id, title=group_id)
 
     def getGroupMembers(self, group_id):
-        """ skip for virtual groups formed as unit number plus affiliations
+        """ skip for groups with unit|affiliation
         """
         return []
 
     def getGroups(self):
+        """ skip for groups with unit|affiliation
+        """
         return []
 
     def getGroupIds(self):
+        """ skip for groups with unit|affiliation
+        """
         return []
 
 

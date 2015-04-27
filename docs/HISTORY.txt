@@ -4,15 +4,17 @@ Changelog
 0.8.6 (unreleased)
 ------------------
 
-- New bootstrap and switched to plone432.
+- New bootstrap and switched to plone433.
+- Added member affiliations check at login #35907.
+- Improved previous affiliations implementation
 
 
 0.8.5 (2014-01-07)
 ------------------
 
-- Implementation for business groups (affiliations) added #853.
-- Adjusted the above according to the IAM after integration #2479.
-- New bootstrap #2340.
+- Implementation for business groups (affiliations) added #16096.
+- Adjusted the above according to the IAM after integration #20974.
+- New bootstrap #20557.
 
 
 0.8.4 (2012-06-18)
@@ -39,7 +41,7 @@ Changelog
 0.8.1 (2011-03-09)
 ------------------
 
-- add a warning message if one shib header is not set, refs #1431
+- add a warning message if one shib header is not set, refs #17830
 
 
 0.8 (2010-09-27)
@@ -50,7 +52,7 @@ Changelog
 0.7 (2009-12-09)
 ----------------
 
-- Handle correctly id and not login passed to enumerateUsers (refs #680)
+- Handle correctly id and not login passed to enumerateUsers (refs #15577)
 
 
 0.6 (2009-12-02)
