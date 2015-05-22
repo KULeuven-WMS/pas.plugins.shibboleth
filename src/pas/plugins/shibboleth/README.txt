@@ -91,6 +91,17 @@ And with a user with more than 1 group:
     >>> shibGroupManager.getGroupsForPrincipal(user)
     ('50649782', '50649785')
 
+Check for users with no units:
+
+    >>> del app.REQUEST.environ['HTTP_KULOUNUMBER']
+    >>> shibGroupManager.getGroupsForPrincipal(user)
+    ()
+
+Check for users with no units, but with affiliation:
+
+    >>> app.REQUEST.environ['HTTP_UNSCOPED_AFFILIATION'] = 'affiliate'
+    >>> shibGroupManager.getGroupsForPrincipal(user)
+    ('affiliate',)
 
 User Properties
 ---------------
@@ -137,7 +148,7 @@ Still nothing because we didn't set the properties on the object
 
 Warning if one header is missing
 
-    >>> from zope.testing.loggingsupport import InstalledHandler
+    >>> from zope.testing.loggingsupport import InstalledHandler 
     >>> handler = InstalledHandler('pas.plugins.shibboleth')
     >>> app.REQUEST.environ['HTTP_KULMAIL'] = 'info@kuleuven.be'
     >>> app.REQUEST.environ['HTTP_KULFULLNAME'] = ''

@@ -58,7 +58,7 @@ class ShibGroupManager(BasePlugin, Cacheable):
     security.declarePrivate('getGroupsForPrincipal')
 
     def getGroupsForPrincipal(self, principal, request=None):
-        """ get the unit information from REQUEST upon login
+        """ get the groups information from REQUEST upon login
         """
         if request is None:
             if hasattr(self, 'REQUEST'):
@@ -76,14 +76,14 @@ class ShibGroupManager(BasePlugin, Cacheable):
             units = request.environ.get('HTTP_KULOUNUMBER')
             if units:
                 groups = units.split(';')
-            groups.extend(self.getAffiliations(request, units))
+            groups.extend(self.getAffiliations(request, groups))
         else:
             return ()
         groups = tuple(groups)
         self.ZCacheable_set(groups, view_name)
         return groups
 
-    def getAffiliations(self, request, units=None):
+    def getAffiliations(self, request, units=[]):
         """ fetch and keep affiliations from REQUEST upon login """
 
         unscoped_affiliations = request.environ.get(
@@ -96,18 +96,21 @@ class ShibGroupManager(BasePlugin, Cacheable):
         if scoped_affiliations:
             affiliations.extend(scoped_affiliations.split(';'))
 
-        # kuleuven-specific implementation
-        # of employee affiliations combined with units
-        kul_affiliations = [aff[:aff.find('@')] for aff in affiliations
-                            if aff in ('staff@kuleuven.be',
-                                       'zap@kuleuven.be',
-                                       'bap@kuleuven.be',
-                                       'aap@kuleuven.be',
-                                       'op3@kuleuven.be')]
-        import itertools
-        for unit, affiliation in itertools.product(units,
-                                                   kul_affiliations):
-            affiliations.append("%s|%s" % (unit, affiliation))
+            if not units:
+                return affiliations
+
+            # @kuleuven: units combined with different employee affiliations
+            kul_affiliations = [aff[:aff.find('@')] for aff in affiliations
+                                if aff in ('staff@kuleuven.be',
+                                           'zap@kuleuven.be',
+                                           'bap@kuleuven.be',
+                                           'aap@kuleuven.be',
+                                           'op3@kuleuven.be')]
+            if kul_affiliations:
+                import itertools
+                for unit, affiliation in itertools.product(units,
+                                                           kul_affiliations):
+                    affiliations.append("%s|%s" % (unit, affiliation))
         return affiliations
 
     #
